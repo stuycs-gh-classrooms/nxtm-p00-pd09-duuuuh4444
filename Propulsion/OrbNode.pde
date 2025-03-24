@@ -19,22 +19,24 @@ class OrbNode extends Orb {
     if (previous != null) {
       drawSpring(previous, true, springLength);
     }
+    //println("displayed");
   }
 
   void drawSpring(Orb o1, boolean offset, int springLength)
   {
     if (round(center.dist(o1.center)) == springLength) {
+      //println(round(center.dist(o1.center)));
       stroke(0);
     } else if (round(center.dist(o1.center)) < springLength) {
-      // println(round(center.dist(o1.center)));
+      println(round(center.dist(o1.center)));
       stroke(0, 255, 0);
     } else {
-      //println(round(center.dist(o1.center)));
+      println(round(center.dist(o1.center)));
       stroke(255, 0, 0);
     }
     strokeWeight(2);
     if (offset) {
-      line(center.x, center.y+10, o1.center.x, o1.center.y+10);
+      line(center.x, center.y+5, o1.center.x, o1.center.y+5);
     } else {
       line(center.x, center.y, o1.center.x, o1.center.y);
     }

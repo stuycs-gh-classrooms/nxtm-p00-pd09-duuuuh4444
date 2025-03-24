@@ -37,10 +37,10 @@ class OrbList {
     }
   }//populate
 
-  void display() {
+  void display(int springLength) {
     OrbNode current = front;
     while (current != null) {
-      current.display();
+      current.display(springLength);
       current = current.next;
     }
   }//display
@@ -62,10 +62,10 @@ class OrbList {
   }//applySprings
 
 
-  void run(boolean boucne) {
+  void run(boolean bou) {
     OrbNode current = front;
     while (current != null) {
-      current.move(boucne);
+      current.move(bou);
       current = current.next;
     }
   }//run
