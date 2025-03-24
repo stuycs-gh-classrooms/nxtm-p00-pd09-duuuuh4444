@@ -11,31 +11,33 @@ class OrbNode extends Orb {
     next = previous = null;
   }//constructor
 
-  void display() {
+  void display(int springLength) {
     super.display();
     if (next != null) {
-      float dnext = this.center.dist(next.center);
-      if (dnext < SPRING_LENGTH) {
-        stroke(0, 255, 0);
-      } else if (dnext > SPRING_LENGTH) {
-        stroke(255, 0, 0);
-      } else {
-        stroke(0);
-      }
-      line(this.center.x, this.center.y+2, next.center.x, next.center.y+2);
-    }//next spring
-
+      drawSpring(next, false, springLength);
+    }
     if (previous != null) {
-      float dprev = this.center.dist(previous.center);
-      if (dprev < SPRING_LENGTH) {
-        stroke(0, 255, 0);
-      } else if (dprev > SPRING_LENGTH) {
-        stroke(255, 0, 0);
-      } else {
-        stroke(0);
-      }
-      line(this.center.x, this.center.y-2, previous.center.x, previous.center.y-2);
-    }//next spring
+      drawSpring(previous, true, springLength);
+    }
+  }
+
+  void drawSpring(Orb o1, boolean offset, int springLength)
+  {
+    if (round(center.dist(o1.center)) == springLength) {
+      stroke(0);
+    } else if (round(center.dist(o1.center)) < springLength) {
+      // println(round(center.dist(o1.center)));
+      stroke(0, 255, 0);
+    } else {
+      //println(round(center.dist(o1.center)));
+      stroke(255, 0, 0);
+    }
+    strokeWeight(2);
+    if (offset) {
+      line(center.x, center.y+10, o1.center.x, o1.center.y+10);
+    } else {
+      line(center.x, center.y, o1.center.x, o1.center.y);
+    }
   }//drawSpring
 
   void applySprings(int springLength, float springK) {
