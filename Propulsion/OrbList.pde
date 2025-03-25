@@ -2,8 +2,9 @@ class OrbList {
 
   OrbNode front;
 
-  OrbList() {
+  OrbList(int n, boolean f) {
     front = null;
+    populate(n, f);
   }//constructor
 
   void addFront(OrbNode o) {
@@ -37,10 +38,10 @@ class OrbList {
     }
   }//populate
 
-  void display(int springLength) {
+  void display() {
     OrbNode current = front;
     while (current != null) {
-      current.display(springLength);
+      current.display();
       current = current.next;
     }
   }//display
@@ -62,10 +63,11 @@ class OrbList {
   }//applySprings
 
 
-  void run(boolean bou) {
+  void run(boolean bou, int springLength) {
     OrbNode current = front;
     while (current != null) {
       current.move(bou);
+      current.drawSpring(springLength);
       current = current.next;
     }
   }//run

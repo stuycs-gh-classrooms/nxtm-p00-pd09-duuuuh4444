@@ -118,7 +118,7 @@ class Orb {
 
   void setColor() {
     color c0 = color(0, 255, 255);
-    color c1 = color(0);
+    color c1 = color(100);
     c = lerpColor(c0, c1, (mass-MIN_SIZE)/(MAX_MASS-MIN_SIZE));
   }//setColor
 

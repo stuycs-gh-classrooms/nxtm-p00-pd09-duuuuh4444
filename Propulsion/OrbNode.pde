@@ -11,34 +11,39 @@ class OrbNode extends Orb {
     next = previous = null;
   }//constructor
 
-  void display(int springLength) {
+  void display() {
     super.display();
-    if (next != null) {
-      drawSpring(next, false, springLength);
-    }
-    if (previous != null) {
-      drawSpring(previous, true, springLength);
-    }
-    //println("displayed");
   }
 
-  void drawSpring(Orb o1, boolean offset, int springLength)
+  void drawSpring(int springLength)
   {
-    if (round(center.dist(o1.center)) == springLength) {
-      //println(round(center.dist(o1.center)));
-      stroke(0);
-    } else if (round(center.dist(o1.center)) < springLength) {
-      println(round(center.dist(o1.center)));
-      stroke(0, 255, 0);
-    } else {
-      println(round(center.dist(o1.center)));
-      stroke(255, 0, 0);
+    if (next != null) {
+      if (round(center.dist(next.center)) == springLength) {
+        //println(round(center.dist(next.center)));
+        stroke(0);
+      } else if (round(center.dist(next.center)) < springLength) {
+        //println(round(center.dist(next.center)));
+        stroke(0, 255, 0);
+      } else {
+        //println(round(center.dist(next.center)));
+        stroke(255, 0, 0);
+      }
+      strokeWeight(1);
+      line(center.x, center.y-1, next.center.x, next.center.y-1);
     }
-    strokeWeight(2);
-    if (offset) {
-      line(center.x, center.y+5, o1.center.x, o1.center.y+5);
-    } else {
-      line(center.x, center.y, o1.center.x, o1.center.y);
+    if (previous != null) {
+      if (round(center.dist(previous.center)) == springLength) {
+        //println(round(center.dist(previous.center)));
+        stroke(0);
+      } else if (round(center.dist(previous.center)) < springLength) {
+        //println(round(center.dist(previous.center)));
+        stroke(0, 255, 0);
+      } else {
+        //println(round(center.dist(previous.center)));
+        stroke(255, 0, 0);
+      }
+      strokeWeight(1);
+      line(center.x, center.y+1, previous.center.x, previous.center.y+1);
     }
   }//drawSpring
 

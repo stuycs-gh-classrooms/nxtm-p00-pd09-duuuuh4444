@@ -14,12 +14,12 @@ OrbList ol;
 void setup() {
   size(800, 800);
   SPRING_LENGTH = (width-10)/(NUM_ORBS+1);
-  ol = new OrbList();
-  ol.populate(NUM_ORBS, true);
+  ol = new OrbList(NUM_ORBS, true);
   println(SPRING_LENGTH);
 }
 
 void draw() {
   background(255);
-  ol.display(SPRING_LENGTH);
+  ol.display();
+  ol.run(false, SPRING_LENGTH);
 }
