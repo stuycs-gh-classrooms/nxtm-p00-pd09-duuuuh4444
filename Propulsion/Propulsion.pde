@@ -30,14 +30,44 @@ void setup() {
 }
 
 void draw() {
+  modeButtons();
   background(255);
   ol.display();
   ol.run(false, SPRING_LENGTH);
 }
 
-void text() {
-  fill(255,50,50);
-  for(int i = 0; i < toggles.length; i++) {
-    rect(
+void keyPressed() {
+  if (key == ' ') { toggles[moving] = !toggles[moving]; }
+  if (key == 'b') { toggles[bounce] = !toggles[bounce]; }
+  if (key == 'g') { toggles[grav] = !toggles[grav]; }
+  if (key == 'd') { toggles[drag] = !toggles[drag]; }
+  if (key == 'c') { toggles[collision] = !toggles[collision]; }
+  if (key == 'p') { toggles[propulsion] = !toggles[propulsion]; }
+}
+
+void modeButtons() {
+  textSize(30); 
+  int x = 0;
+  
+  for (int m = 0; m < toggles.length; m++) {
+    // set box color
+    if (toggles[m]) { 
+      fill(0, 255, 0); 
+    } else { 
+      fill(255, 0, 0); 
+    }
+
+    float w = textWidth(togglesT[m]);
+    rect(x, 0, w + 5, 30);
+    fill(0);
+    text(togglesT[m], x + 2, 22);
+    x += w + 10; // Adjust spacing between buttons
+
   }
 }
+//void text() {
+//  fill(255,50,50);
+//  for(int i = 0; i < toggles.length; i++) {
+//    rect(
+//  }
+//}
