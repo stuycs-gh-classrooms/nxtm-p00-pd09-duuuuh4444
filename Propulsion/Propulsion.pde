@@ -6,6 +6,7 @@ float MAX_MASS = 100;
 float G_CONSTANT = 1;
 float D_COEF = 0.1;
 
+boolean ordered;
 boolean[] toggles = new boolean[8];
 String[] togglesT = {"Moving", "Bounce", "Grav", "Drag", "Collision", "Propulsion", "Fall", "Springs"};
 boolean[] sim = new boolean[5];
@@ -26,8 +27,9 @@ OrbList ol;
 
 void setup() {
   size(800, 800);
+  ordered = true;
   SPRING_LENGTH = (width-10)/(NUM_ORBS+1);
-  ol = new OrbList(NUM_ORBS, true);
+  ol = new OrbList(NUM_ORBS, ordered);
   println(SPRING_LENGTH);
 }
 
@@ -62,6 +64,12 @@ void modeButtons() {
     textAlign(CENTER, CENTER);
     text(label, m * sectionWidth + sectionWidth/2, 5 + buttonHeight/2);
   }
+  // Below for new list making info
+  fill(0);
+  textAlign(RIGHT,BOTTOM);
+  text("Ordered? " + ordered, width-10, height-20);
+  textSize(15);
+  text("* o to change ordered, n to make new list", width-10, height-5);
 }
 
 void mouseClicked() {
@@ -89,6 +97,6 @@ void keyPressed() {
   if (key == 'p') toggles[5] = !toggles[5]; // Propulsion
   if (key == 'f') toggles[6] = !toggles[6]; // Fall
   if (key == 's') toggles[7] = !toggles[7]; // Springs
-  if (key == 'n') ol = new OrbList(NUM_ORBS, true); // Ordered new List
-  if (key == 'o') ol = new OrbList(NUM_ORBS, false); // Ordered new List
+  if (key == 'n') ol = new OrbList(NUM_ORBS, ordered); // new List
+  if (key == 'o') ordered = !ordered; // Ordered
 }
