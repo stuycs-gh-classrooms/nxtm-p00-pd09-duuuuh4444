@@ -30,44 +30,59 @@ void setup() {
 }
 
 void draw() {
-  modeButtons();
   background(255);
   ol.display();
   ol.run(false, SPRING_LENGTH);
-}
-
-void keyPressed() {
-  if (key == ' ') { toggles[moving] = !toggles[moving]; }
-  if (key == 'b') { toggles[bounce] = !toggles[bounce]; }
-  if (key == 'g') { toggles[grav] = !toggles[grav]; }
-  if (key == 'd') { toggles[drag] = !toggles[drag]; }
-  if (key == 'c') { toggles[collision] = !toggles[collision]; }
-  if (key == 'p') { toggles[propulsion] = !toggles[propulsion]; }
+  modeButtons();
 }
 
 void modeButtons() {
-  textSize(30); 
-  int x = 0;
+  textSize(18);
+  int sectionWidth = width / toggles.length;
+  int buttonHeight = 30;
   
   for (int m = 0; m < toggles.length; m++) {
-    // set box color
-    if (toggles[m]) { 
-      fill(0, 255, 0); 
-    } else { 
-      fill(255, 0, 0); 
+    String label = togglesT[m];
+    
+    // Draw button background
+    if (toggles[m]) {
+      fill(76, 175, 80);  // Green when on
+    } else {
+      fill(244, 67, 54);  // Red when off
     }
-
-    float w = textWidth(togglesT[m]);
-    rect(x, 0, w + 5, 30);
-    fill(0);
-    text(togglesT[m], x + 2, 22);
-    x += w + 10; // Adjust spacing between buttons
-
+    
+    stroke(0);
+    strokeWeight(1);
+    rect(m * sectionWidth, 5, sectionWidth, buttonHeight, 5); // Rounded corners
+    
+    // Draw label centered in each section
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(label, m * sectionWidth + sectionWidth/2, 5 + buttonHeight/2);
   }
 }
-//void text() {
-//  fill(255,50,50);
-//  for(int i = 0; i < toggles.length; i++) {
-//    rect(
-//  }
-//}
+
+void mouseClicked() {
+  // Process clicks between y = 5 and y = 35
+  if (mouseY >= 5 && mouseY <= 35) {
+    // Iterate through toggles
+    for (int i = 0; i < toggles.length; i++) {
+      // Check horizontal position
+      if (mouseX < (i + 1) * (width / toggles.length)) {
+        // Toggle the corresponding boolean
+        toggles[i] = !toggles[i];
+        break;
+      }
+    }
+  }
+}
+
+void keyPressed() {
+  // Existing key toggles (now synced with mouse)
+  if (key == ' ') toggles[0] = !toggles[0]; // Moving
+  if (key == 'b') toggles[1] = !toggles[1]; // Bounce
+  if (key == 'g') toggles[2] = !toggles[2]; // Grav
+  if (key == 'd') toggles[3] = !toggles[3]; // Drag
+  if (key == 'c') toggles[4] = !toggles[4]; // Collision
+  if (key == 'p') toggles[5] = !toggles[5]; // Propulsion
+}
