@@ -6,8 +6,8 @@ float MAX_MASS = 100;
 float G_CONSTANT = 1;
 float D_COEF = 0.1;
 
-boolean[] toggles = new boolean[6];
-String[] togglesT = {"Moving", "Bounce", "Grav", "Drag", "Collision", "Propulsion"};
+boolean[] toggles = new boolean[8];
+String[] togglesT = {"Moving", "Bounce", "Grav", "Drag", "Collision", "Propulsion", "Fall", "Springs"};
 boolean[] sim = new boolean[5];
 String[] simT = {"Orbit", "Spring", "Drag", "Collisions", "Combination"};
 int SPRING_LENGTH;
@@ -19,6 +19,8 @@ int grav = 3;
 int drag = 4;
 int collision = 5;
 int propulsion = 6;
+int fall = 7;
+int spring = 8;
 
 OrbList ol;
 
@@ -31,9 +33,9 @@ void setup() {
 
 void draw() {
   background(255);
+  modeButtons();
   ol.display();
   ol.run(false, SPRING_LENGTH);
-  modeButtons();
 }
 
 void modeButtons() {
@@ -85,4 +87,8 @@ void keyPressed() {
   if (key == 'd') toggles[3] = !toggles[3]; // Drag
   if (key == 'c') toggles[4] = !toggles[4]; // Collision
   if (key == 'p') toggles[5] = !toggles[5]; // Propulsion
+  if (key == 'f') toggles[6] = !toggles[6]; // Fall
+  if (key == 's') toggles[7] = !toggles[7]; // Springs
+  if (key == 'n') ol = new OrbList(NUM_ORBS, true); // Ordered new List
+  if (key == 'o') ol = new OrbList(NUM_ORBS, false); // Ordered new List
 }
