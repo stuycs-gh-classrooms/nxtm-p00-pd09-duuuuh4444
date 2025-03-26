@@ -35,7 +35,7 @@ class Orb {
       xBounce();
       yBounce();
     }
-
+    
     velocity.add(acceleration);
     center.add(velocity);
     acceleration.mult(0);

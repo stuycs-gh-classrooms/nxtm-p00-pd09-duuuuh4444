@@ -38,13 +38,26 @@ class OrbList {
     }
   }//populate
 
-  void display() {
+  void display(int springLength) {
     OrbNode current = front;
     while (current != null) {
       current.display();
       current = current.next;
     }
+    current = front;
+    while (current != null) {
+      current.drawSpring(springLength);
+      current = current.next;
+    }
   }//display
+
+  void applyForce(PVector force) {
+    OrbNode current = front;
+    while (current != null) {
+      current.applyForce(force);
+      current = current.next;
+    }
+  }//applyForce
 
   void applySprings(int springLength, float springK) {
     OrbNode current = front;
@@ -63,11 +76,10 @@ class OrbList {
   }//applySprings
 
 
-  void run(boolean bou, int springLength) {
+  void run(boolean bou, boolean coll) {
     OrbNode current = front;
     while (current != null) {
-      current.move(bou);
-      current.drawSpring(springLength);
+      current.move(bou, coll);
       current = current.next;
     }
   }//run

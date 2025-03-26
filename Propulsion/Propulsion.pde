@@ -14,14 +14,14 @@ String[] simT = {"Orbit", "Spring", "Drag", "Collisions", "Combination"};
 int SPRING_LENGTH;
 float  SPRING_K = 0.005;
 
-int moving = 1;
-int bounce = 2;
-int grav = 3;
-int drag = 4;
-int collision = 5;
-int propulsion = 6;
-int fall = 7;
-int spring = 8;
+int moving = 0;
+int bounce = 1;
+int grav = 2;
+int drag = 3;
+int collision = 4;
+int propulsion = 5;
+int fall = 6;
+int spring = 7;
 
 OrbList ol;
 
@@ -36,29 +36,37 @@ void setup() {
 void draw() {
   background(255);
   modeButtons();
-  ol.display();
-  ol.run(false, SPRING_LENGTH);
+  ol.display(SPRING_LENGTH);
+  if (toggles[fall]) {
+    ol.applyForce(new PVector(0, 1));
+  }// Fall
+  if (toggles[spring]) {
+    ol.applySprings(SPRING_LENGTH, SPRING_K);
+  }// Springs
+  if (toggles[moving]) {
+    ol.run(toggles[bounce], toggles[collision]);
+  }// Moving
 }
 
 void modeButtons() {
   textSize(18);
   int sectionWidth = width / toggles.length;
   int buttonHeight = 30;
-  
+
   for (int m = 0; m < toggles.length; m++) {
     String label = togglesT[m];
-    
+
     // Draw button background
     if (toggles[m]) {
       fill(76, 175, 80);  // Green when on
     } else {
       fill(244, 67, 54);  // Red when off
     }
-    
+
     stroke(0);
     strokeWeight(1);
     rect(m * sectionWidth, 5, sectionWidth, buttonHeight, 5); // Rounded corners
-    
+
     // Draw label centered in each section
     fill(255);
     textAlign(CENTER, CENTER);
@@ -66,7 +74,7 @@ void modeButtons() {
   }
   // Below for new list making info
   fill(0);
-  textAlign(RIGHT,BOTTOM);
+  textAlign(RIGHT, BOTTOM);
   text("Ordered? " + ordered, width-10, height-20);
   textSize(15);
   text("* o to change ordered, n to make new list", width-10, height-5);
