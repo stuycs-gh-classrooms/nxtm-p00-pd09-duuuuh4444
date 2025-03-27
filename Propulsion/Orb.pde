@@ -35,11 +35,21 @@ class Orb {
       xBounce();
       yBounce();
     }
-    
     velocity.add(acceleration);
     center.add(velocity);
     acceleration.mult(0);
   }//move
+
+  void collision(Orb o) {
+    if (collisionCheck(o)) {
+      velocity.mult(-1);
+      o.velocity.mult(-1);
+      center.add(velocity);
+      o.center.add(o.velocity);
+      acceleration.mult(0);
+      o.acceleration.mult(0);
+    }
+  }
 
   void applyForce(PVector force) {
     PVector scaleForce = force.copy();

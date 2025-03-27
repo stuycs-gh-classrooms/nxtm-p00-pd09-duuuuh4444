@@ -57,46 +57,4 @@ class OrbNode extends Orb {
       applyForce(sforce);
     }
   }///applySprings
-
-  void move(boolean bounce, boolean coll) {
-    boolean reg = false;
-    if (bounce) {
-      xBounce();
-      yBounce();
-    }
-
-    if (coll) {
-      if (next != null) {
-        if (center.dist(next.center) < bsize/2+next.bsize/2) {
-          reg = true;
-          velocity.mult(-1);
-          center.add(velocity);
-          next.velocity.mult(-1);
-          next.center.add(next.velocity);
-          acceleration.mult(0);
-          next.acceleration.mult(0);
-        }
-      }
-      if (previous != null) {
-        if (center.dist(previous.center) < bsize/2+previous.bsize/2) {
-          reg = true;
-          velocity.mult(-1);
-          center.add(velocity);
-          previous.velocity.mult(-1);
-          previous.center.add(previous.velocity);
-          acceleration.mult(0);
-          previous.acceleration.mult(0);
-        }
-      }
-      if (!reg) {
-        velocity.add(acceleration);
-        center.add(velocity);
-        acceleration.mult(0);
-      }
-    } else {
-      velocity.add(acceleration);
-      center.add(velocity);
-      acceleration.mult(0);
-    }
-  }//move
 }//OrbNode

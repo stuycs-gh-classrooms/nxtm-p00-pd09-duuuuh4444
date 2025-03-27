@@ -77,10 +77,30 @@ class OrbList {
 
 
   void run(boolean bou, boolean coll) {
+    boolean reg = true;
     OrbNode current = front;
-    while (current != null) {
-      current.move(bou, coll);
-      current = current.next;
+    OrbNode current2 = front.next;
+    if (coll) {
+      while (current != null) {
+        while (current2 != null) {
+          if (current.collisionCheck(current2) && current != current2) {
+            current.collision(current2);
+            reg = false;
+            break;
+          }
+          current2 = current2.next;
+        }
+        if (reg) {
+          current.move(bou);
+        }
+        current = current.next;
+        current2 = front;
+      }
+    } else {
+      while (current != null) {
+        current.move(bou);
+        current = current.next;
+      }
     }
   }//run
 
