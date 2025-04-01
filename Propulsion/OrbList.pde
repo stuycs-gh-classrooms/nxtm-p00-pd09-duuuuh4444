@@ -67,14 +67,41 @@ class OrbList {
     }
   }//applySprings
 
-  void applyGravity(Orb other, float gConstant) {
+  void applyGravityList(float gConstant) {
     OrbNode current = front;
+    OrbNode current2 = front.next;
     while (current != null) {
-      current.applyForce( current.getGravity(other, gConstant) );
+      while (current2 != null) {
+        if (current2 != current) {
+          current.applyForce( current.getGravity(current2, gConstant) );
+          current2.applyForce( current2.getGravity(current, gConstant) );
+        }
+        current2 = current2.next;
+      }
       current = current.next;
     }
   }//applySprings
 
+  void applyGravity(float gConstant) {
+    OrbNode current = front;
+    while (current != null) {
+      if (current.next != null) {
+        current.applyForce( current.getGravity(current.next, gConstant) );
+      }
+      if (current.prev != null) {
+        current.applyForce( current.getGravity(current.previous, gConstant) );
+      }
+      current = current.next;
+    }
+  }//applySprings
+
+  void applyDrag(float dc) {
+    OrbNode current = front;
+    while (current != null) {
+      current.applyForce( current.getDragForce(dc) );
+      current = current.next;
+    }
+  }//applySprings
 
   void run(boolean bou, boolean coll) {
     boolean reg = true;
@@ -85,6 +112,7 @@ class OrbList {
         while (current2 != null) {
           if (current.collisionCheck(current2) && current != current2) {
             current.collision(current2);
+            println(current2.velocity);
             reg = false;
             break;
           }

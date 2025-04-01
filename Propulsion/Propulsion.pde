@@ -3,14 +3,14 @@ int MIN_SIZE = 10;
 int MAX_SIZE = 60;
 float MIN_MASS = 10;
 float MAX_MASS = 100;
-float G_CONSTANT = 1;
+float G_CONSTANT = .1;
 float D_COEF = 0.1;
 
 boolean ordered;
 boolean[] toggles = new boolean[8];
 String[] togglesT = {"Moving", "Bounce", "Grav", "Drag", "Collision", "Propulsion", "Fall", "Springs"};
 boolean[] sim = new boolean[5];
-String[] simT = {"Orbit", "Spring", "Drag", "Collisions", "Combination"};
+String[] simT = {"Orbit", "Spring", "Drag", "Shockwave", "Combination"};
 int SPRING_LENGTH;
 float  SPRING_K = 0.005;
 
@@ -31,19 +31,26 @@ void setup() {
   SPRING_LENGTH = (width-10)/(NUM_ORBS+1);
   ol = new OrbList(NUM_ORBS, ordered);
   println(SPRING_LENGTH);
+  frameRate(999);
 }
 
 void draw() {
   background(255);
   modeButtons();
   ol.display(SPRING_LENGTH);
-  if (toggles[fall]) {
-    ol.applyForce(new PVector(0, 1));
-  }// Fall
-  if (toggles[spring]) {
-    ol.applySprings(SPRING_LENGTH, SPRING_K);
-  }// Springs
   if (toggles[moving]) {
+    if (toggles[fall]) {
+      ol.applyForce(new PVector(0, 0.1));
+    }// Fall
+    if (toggles[spring]) {
+      ol.applySprings(SPRING_LENGTH, SPRING_K);
+    }// Springs
+    if (toggles[drag]) {
+      ol.applyDrag(D_COEF);
+    }// Drag
+    if (toggles[grav]) {
+      ol.applyGravity(G_CONSTANT);
+    }
     ol.run(toggles[bounce], toggles[collision]);
   }// Moving
 }

@@ -41,14 +41,13 @@ class Orb {
   }//move
 
   void collision(Orb o) {
-    if (collisionCheck(o)) {
-      velocity.mult(-1);
-      o.velocity.mult(-1);
-      center.add(velocity);
-      o.center.add(o.velocity);
-      acceleration.mult(0);
-      o.acceleration.mult(0);
-    }
+    velocity.mult(-1);
+    o.velocity.mult(-1);
+    center.add(velocity);
+    o.center.add(o.velocity);
+    o.center.add(o.velocity); //added to stop freezing balls for collisions
+    acceleration.mult(0);
+    o.acceleration.mult(0);
   }
 
   void applyForce(PVector force) {
