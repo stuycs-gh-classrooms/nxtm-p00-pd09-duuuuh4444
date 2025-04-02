@@ -156,4 +156,44 @@ class OrbList {
     }
     current = null;
   }//removeNode
+
+  void Orbit(FixedOrb o, float gConstant) {
+    OrbNode current = front;
+    while (current != null) {
+      current.applyForce(current.getGravity(o, gConstant));
+      current = current.next;
+    }
+  }//Orbit
+
+  void simpleDisplay() {
+    OrbNode current = front;
+    while (current != null) {
+      current.display();
+      current = current.next;
+    }
+  }//simpleDisplay
+
+  void SpringSim(FixedOrb o, int springLength) {
+    OrbNode current = front;
+    while (current != null) {
+      if (round(current.center.dist(o.center)) == springLength) {
+        stroke(100);
+      } else if (round(current.center.dist(o.center)) < springLength) {
+        stroke(100, 255, 100);
+      } else {
+        stroke(255, 100, 100);
+      }
+      strokeWeight(1);
+      line(current.center.x, current.center.y, o.center.x, o.center.y);
+      current = current.next;
+    }
+  }//SpringSim
+
+  void SpringJester(FixedOrb o, int springLength, float springK) {
+    OrbNode current = front;
+    while (current != null) {
+      current.applyForce(current.getSpring(o, springLength, springK));
+      current = current.next;
+    }
+  }//SpringJester
 }//OrbList

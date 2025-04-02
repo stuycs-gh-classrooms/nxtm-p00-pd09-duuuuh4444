@@ -10,6 +10,7 @@ float MAX_MASS = 10;
 float G_CONSTANT = 0.1;
 float LG_CONSTANT = 0.01;
 float D_COEF = 0.1;
+int counter, radcounter, storedrad;
 
 boolean ordered;
 boolean[] toggles = new boolean[9];
@@ -37,12 +38,21 @@ void setup() {
   SPRING_LENGTH = (width-10)/(NUM_ORBS+1);
   ol = new OrbList(NUM_ORBS, ordered);
   println(SPRING_LENGTH);
+  counter = 0;
 }
 
 void draw() {
   background(255);
   modeButtons();
-  ol.display(SPRING_LENGTH);
+  if (sim[0]) {
+    OrbitSim();
+  } else if (sim[1]) {
+    SpringSim();
+  } else if (sim[3]) {
+    ShockwaveSim();
+  } else {
+    ol.display(SPRING_LENGTH);
+  }
   if (toggles[moving]) {
     if (toggles[fall]) {
       ol.applyForce(new PVector(0, 0.1));
@@ -105,7 +115,7 @@ void modeButtons() {
     // Draw button background
     if (sim[m]) {
       fill(76, 175, 80);  // Green when on
-      print(m);
+      //print(m);
     } else {
       fill(244, 67, 54);  // Red when off
     }
@@ -136,11 +146,10 @@ void mouseClicked() {
     for (int i = 0; i < sim.length; i++) {
       // Check horizontal position
       if (mouseX < (i + 1) * (width / sim.length)) {
-        for(int j = 0; j < sim.length; j++) {
-          if(j == i) {
+        for (int j = 0; j < sim.length; j++) {
+          if (j == i) {
             sim[j] = true;
-          }
-          else {
+          } else {
             sim[j] = false;
           }
         }
@@ -185,8 +194,10 @@ void keyPressed() {
         sim[i] = false;
       }
     }
+    ordered = false;
+    ol = new OrbList(NUM_ORBS, ordered);
   } // Orbit
-    if (key == '2') {
+  if (key == '2') {
     for (int i = 0; i < sim.length; i++) {
       if (i == 1) {
         sim[i] = true;
@@ -194,8 +205,10 @@ void keyPressed() {
         sim[i] = false;
       }
     }
+    ordered = false;
+    ol = new OrbList(NUM_ORBS, ordered);
   } // Spring
-    if (key == '3') {
+  if (key == '3') {
     for (int i = 0; i < sim.length; i++) {
       if (i == 2) {
         sim[i] = true;
@@ -204,7 +217,7 @@ void keyPressed() {
       }
     }
   } // Drag
-    if (key == '4') {
+  if (key == '4') {
     for (int i = 0; i < sim.length; i++) {
       if (i == 3) {
         sim[i] = true;
@@ -212,8 +225,10 @@ void keyPressed() {
         sim[i] = false;
       }
     }
+    ordered = false;
+    ol = new OrbList(NUM_ORBS, ordered);
   } // Shockwave
-    if (key == '5') {
+  if (key == '5') {
     for (int i = 0; i < sim.length; i++) {
       if (i == 4) {
         sim[i] = true;
@@ -223,3 +238,53 @@ void keyPressed() {
     }
   } // Combination
 }//keyPressed
+
+void OrbitSim() {
+  ordered = false;
+  toggles[spring] = false;
+  FixedOrb Sun = new FixedOrb(width/2, 200, 200, 99);
+  Sun.c = color(255, 0, 0);
+  Sun.display();
+  ol.simpleDisplay();
+  if (toggles[moving]) {
+    ol.Orbit(Sun, G_CONSTANT);
+  }
+}//OrbitSim
+
+void SpringSim() {
+  ordered = false;
+  FixedOrb Jester = new FixedOrb(width/2, 200, 200, 99);
+  Jester.c = color(#92B216);
+  Jester.display();
+  ol.display(SPRING_LENGTH);
+  ol.SpringSim(Jester, SPRING_LENGTH);
+  if (toggles[moving]) {
+    ol.SpringJester(Jester, SPRING_LENGTH, SPRING_K);
+  }
+}//SpringSim
+
+void ShockwaveSim() {
+  int rad = int(random(350, 700));
+  ordered = false;
+  ol.display(SPRING_LENGTH);
+  if (toggles[moving]) {
+    if (counter == 600) {
+      storedrad = rad;
+      counter = 0;
+      fill(9, 64, 108, 50);
+      noStroke();
+      circle(width/2, height/2, rad);
+      radcounter = 0;
+      ol.applyPropulsion(width/2, height/2, rad, random(MIN_FORCE, MAX_FORCE)*100);
+    } else {
+      if (radcounter < 20) {
+        fill(9, 64, 108, 50);
+        noStroke();
+        circle(width/2, height/2, storedrad);
+        radcounter++;
+      }
+      counter++;
+      println(counter);
+    }
+  }
+}//ShockwaveSim
