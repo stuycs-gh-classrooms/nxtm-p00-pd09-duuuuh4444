@@ -88,6 +88,25 @@ class Orb {
     return direction;
   }//getSpring
 
+  PVector getPropulsion(int x, int y, int r, float m) {
+    PVector explosion = new PVector(x, y);
+
+    PVector direction = PVector.sub(center,explosion);
+    direction.normalize();
+
+
+    float distance = center.dist(explosion);
+
+    float mag = m * (distance/r);
+
+    if (distance > r) {
+      mag = 0;
+    }
+    
+    direction.mult(mag);
+    return direction;
+  }//getPropulsion
+
   boolean yBounce() {
     if (center.y > height - bsize/2) {
       velocity.y *= -1;

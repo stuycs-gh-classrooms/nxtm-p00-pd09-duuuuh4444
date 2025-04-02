@@ -88,12 +88,12 @@ class OrbList {
       if (current.next != null) {
         current.applyForce( current.getGravity(current.next, gConstant) );
       }
-      if (current.prev != null) {
+      if (current.previous != null) {
         current.applyForce( current.getGravity(current.previous, gConstant) );
       }
       current = current.next;
     }
-  }//applySprings
+  }//applyGravity
 
   void applyDrag(float dc) {
     OrbNode current = front;
@@ -101,7 +101,18 @@ class OrbList {
       current.applyForce( current.getDragForce(dc) );
       current = current.next;
     }
-  }//applySprings
+  }//applyDrag
+
+  void applyPropulsion(int x, int y, int r, float m) {
+    OrbNode current = front;
+    while (current != null) {
+      current.applyForce( current.getPropulsion(x, y, r, m) );
+      if (current.getPropulsion(x, y, r, m).mag() != 0) {
+        println(current.getPropulsion(x, y, r, m));
+      }
+      current = current.next;
+    }
+  }//applyPropulsion
 
   void run(boolean bou, boolean coll) {
     boolean reg = true;
