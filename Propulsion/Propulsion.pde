@@ -7,14 +7,13 @@ float MIN_FORCE = 1;
 float MAX_FORCE = 5;
 float MIN_MASS = 1;
 float MAX_MASS = 10;
-float G_CONSTANT = 0.1;
-float LG_CONSTANT = 0.01;
+float G_CONSTANT = 0.01;
 float D_COEF = 0.1;
 int counter, radcounter, storedrad;
 
 boolean ordered;
 boolean[] toggles = new boolean[8];
-String[] togglesT = {"Moving", "Bounce", "LGrav", "Drag", "Collision", "Propulsion", "Fall", "Springs"};
+String[] togglesT = {"Moving", "Bounce", "Grav", "Drag", "Collision", "Propulsion", "Fall", "Springs"};
 boolean[] sim = new boolean[5];
 String[] simT = {"Orbit", "Spring", "Drag", "Shockwave", "Combination"};
 int SPRING_LENGTH;
@@ -22,7 +21,7 @@ float  SPRING_K = 0.005;
 
 int moving = 0;
 int bounce = 1;
-int lgrav = 2;
+int grav = 2;
 int drag = 3;
 int collision = 4;
 int propulsion = 5;
@@ -63,8 +62,8 @@ void draw() {
     if (toggles[drag]) {
       ol.applyDrag(D_COEF);
     }// Drag
-    if (toggles[lgrav]) {
-      ol.applyGravityList(LG_CONSTANT);
+    if (toggles[grav]) {
+      ol.applyGravityList(G_CONSTANT);
     } // All orbs grav
     if (toggles[propulsion] && mousePressed) {
       int rad = int(random(MIN_RAD, MAX_RAD));
@@ -174,7 +173,7 @@ void keyPressed() {
   // Existing key toggles (now synced with mouse)
   if (key == ' ') toggles[0] = !toggles[0]; // Moving
   if (key == 'b') toggles[1] = !toggles[1]; // Bounce
-  if (key == 'l') toggles[2] = !toggles[2]; // LGrav
+  if (key == 'l') toggles[2] = !toggles[2]; // Grav
   if (key == 'd') toggles[3] = !toggles[3]; // Drag
   if (key == 'c') toggles[4] = !toggles[4]; // Collision
   if (key == 'p') toggles[5] = !toggles[5]; // Propulsion
