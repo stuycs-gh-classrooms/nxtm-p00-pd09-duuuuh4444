@@ -38,17 +38,10 @@ class OrbList {
     }
   }//populate
 
-  void display(int springLength) {
+  void display() {
     OrbNode current = front;
     while (current != null) {
       current.display();
-      current = current.next;
-    }
-    current = front;
-    while (current != null) {
-      if (toggles[spring]  || sim[1]) {
-        current.drawSpring(springLength);
-      }
       current = current.next;
     }
   }//display
@@ -61,10 +54,13 @@ class OrbList {
     }
   }//applyForce
 
-  void applySprings(int springLength, float springK) {
+  void applySprings(int springLength, float springK, boolean moving) {
     OrbNode current = front;
     while (current != null) {
-      current.applySprings(springLength, springK);
+      current.drawSpring(springLength);
+      if (moving) {
+        current.applySprings(springLength, springK);
+      }
       current = current.next;
     }
   }//applySprings
@@ -181,14 +177,6 @@ class OrbList {
     }
   }//Orbit
 
-  void simpleDisplay() {
-    OrbNode current = front;
-    while (current != null) {
-      current.display();
-      current = current.next;
-    }
-  }//simpleDisplay
-
   void SpringSim(FixedOrb o, int springLength) {
     OrbNode current = front;
     while (current != null) {
@@ -209,6 +197,7 @@ class OrbList {
     OrbNode current = front;
     while (current != null) {
       current.applyForce(current.getSpring(o, springLength, springK));
+      current.applyForce(new PVector(round(random(-1,1)), 1));
       current = current.next;
     }
   }//SpringJester

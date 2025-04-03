@@ -51,15 +51,15 @@ void draw() {
   } else if (sim[3]) {
     ShockwaveSim();
   } else {
-    ol.display(SPRING_LENGTH);
+    ol.display();
   }
+  if (toggles[spring]) {
+    ol.applySprings(SPRING_LENGTH, SPRING_K, toggles[moving]);
+  }// Springs
   if (toggles[moving]) {
     if (toggles[fall]) {
       ol.applyForce(new PVector(0, 0.1));
     }// Fall
-    if (toggles[spring]) {
-      ol.applySprings(SPRING_LENGTH, SPRING_K);
-    }// Springs
     if (toggles[drag]) {
       ol.applyDrag(D_COEF);
     }// Drag
@@ -238,10 +238,10 @@ void keyPressed() {
 void OrbitSim() {
   ordered = false;
   toggles[spring] = false;
-  FixedOrb Sun = new FixedOrb(width/2, 200, 200, 99);
+  FixedOrb Sun = new FixedOrb(width/2, height/2, 200, 99);
   Sun.c = color(255, 0, 0);
   Sun.display();
-  ol.simpleDisplay();
+  ol.display();
   if (toggles[moving]) {
     ol.Orbit(Sun, G_CONSTANT);
   }
@@ -249,10 +249,10 @@ void OrbitSim() {
 
 void SpringSim() {
   ordered = false;
-  FixedOrb Jester = new FixedOrb(width/2, 200, 200, 99);
+  FixedOrb Jester = new FixedOrb(width/2, 200, 100, 99);
   Jester.c = color(#92B216);
   Jester.display();
-  ol.display(SPRING_LENGTH);
+  ol.display();
   ol.SpringSim(Jester, SPRING_LENGTH);
   if (toggles[moving]) {
     ol.SpringJester(Jester, SPRING_LENGTH, SPRING_K);
@@ -262,7 +262,7 @@ void SpringSim() {
 void ShockwaveSim() {
   int rad = int(random(350, 700));
   ordered = false;
-  ol.display(SPRING_LENGTH);
+  ol.display();
   if (toggles[moving]) {
     if (counter == 600) {
       storedrad = rad;
