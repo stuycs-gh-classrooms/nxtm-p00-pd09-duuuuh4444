@@ -236,7 +236,6 @@ void keyPressed() {
 
 void OrbitSim() {
   ordered = false;
-  toggles[spring] = false;
   FixedOrb Sun = new FixedOrb(width/2, height/2, 200, 99);
   Sun.c = color(255, 0, 0);
   Sun.display();
@@ -260,7 +259,6 @@ void SpringSim() {
 
 void ShockwaveSim() {
   int rad = int(random(350, 700));
-  ordered = false;
   ol.display();
   if (toggles[moving]) {
     if (counter == 600) {
