@@ -46,7 +46,9 @@ class OrbList {
     }
     current = front;
     while (current != null) {
-      current.drawSpring(springLength);
+      if (toggles[spring]  || sim[1]) {
+        current.drawSpring(springLength);
+      }
       current = current.next;
     }
   }//display
@@ -158,9 +160,23 @@ class OrbList {
   }//removeNode
 
   void Orbit(FixedOrb o, float gConstant) {
+    //OrbNode current = front;
+    //while (current != null) {
+    //  current.applyForce(current.getGravity(o, gConstant));
+    //  current = current.next;
+    //}
     OrbNode current = front;
     while (current != null) {
-      current.applyForce(current.getGravity(o, gConstant));
+      PVector gravity = current.getGravity(o, gConstant);
+      current.applyForce(gravity);
+      PVector toCenter = PVector.sub(o.center, current.center);
+      float distance = toCenter.mag();
+      float orbitalSpeed = (sqrt(gConstant * o.mass / distance)) * 10;
+      PVector tangent = new PVector(-toCenter.y, toCenter.x).normalize();
+      tangent.mult(orbitalSpeed);
+
+      //sets velocity to the tangent direction
+      current.velocity = tangent;
       current = current.next;
     }
   }//Orbit
