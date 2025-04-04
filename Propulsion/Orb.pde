@@ -91,7 +91,7 @@ class Orb {
   PVector getPropulsion(int x, int y, int r, float m) {
     PVector explosion = new PVector(x, y);
 
-    PVector direction = PVector.sub(center,explosion);
+    PVector direction = PVector.sub(center, explosion);
     direction.normalize();
 
 
@@ -102,10 +102,19 @@ class Orb {
     if (distance > r) {
       mag = 0;
     }
-    
+
     direction.mult(mag);
     return direction;
   }//getPropulsion
+
+  PVector getOrbitVelocity(FixedOrb o, float gConstant) {
+    PVector toCenter = PVector.sub(o.center, this.center);
+    float distance = toCenter.mag();
+    float orbitalSpeed = sqrt(gConstant * o.mass / distance) * 10;
+    PVector tangent = new PVector(-toCenter.y, toCenter.x).normalize();
+    return tangent.mult(orbitalSpeed);
+  }
+
 
   boolean yBounce() {
     if (center.y > height - bsize/2) {
