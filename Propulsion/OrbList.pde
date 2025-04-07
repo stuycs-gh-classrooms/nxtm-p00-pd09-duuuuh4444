@@ -145,6 +145,9 @@ class OrbList {
           current2 = current2.next;
         }
         if (reg) {
+          if (current.velocity.mag() > 10) {
+            current.velocity.setMag(10);
+          }
           current.move(bou);
         }
         current = current.next;
@@ -152,6 +155,9 @@ class OrbList {
       }
     } else {
       while (current != null) {
+        if (current.velocity.mag() > 10) {
+          current.velocity.setMag(10);
+        }
         current.move(bou);
         current = current.next;
       }

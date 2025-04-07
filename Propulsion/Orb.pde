@@ -108,13 +108,12 @@ class Orb {
   }//getPropulsion
 
   PVector getOrbitVelocity(FixedOrb o, float gConstant) {
-    PVector toCenter = PVector.sub(o.center, this.center);
+    PVector toCenter = PVector.sub(o.center, center);
     float distance = toCenter.mag();
     float orbitalSpeed = sqrt(gConstant * o.mass / distance) * 10;
     PVector tangent = new PVector(-toCenter.y, toCenter.x).normalize();
     return tangent.mult(orbitalSpeed);
-  }
-
+  }//getOrbitVelocity
 
   boolean yBounce() {
     if (center.y > height - bsize/2) {
