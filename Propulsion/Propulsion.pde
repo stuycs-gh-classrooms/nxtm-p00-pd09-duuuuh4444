@@ -47,8 +47,12 @@ void draw() {
     OrbitSim();
   } else if (sim[1]) {
     SpringSim();
+  } else if (sim[2]) {
+    DragSim();
   } else if (sim[3]) {
     ShockwaveSim();
+  } else if (sim[4]) {
+    CombinationSim();
   } else {
     ol.display();
   }
@@ -173,7 +177,7 @@ void keyPressed() {
   // Existing key toggles (now synced with mouse)
   if (key == ' ') toggles[0] = !toggles[0]; // Moving
   if (key == 'b') toggles[1] = !toggles[1]; // Bounce
-  if (key == 'l') toggles[2] = !toggles[2]; // Grav
+  if (key == 'g') toggles[2] = !toggles[2]; // Grav
   if (key == 'd') toggles[3] = !toggles[3]; // Drag
   if (key == 'c') toggles[4] = !toggles[4]; // Collision
   if (key == 'p') toggles[5] = !toggles[5]; // Propulsion
@@ -211,6 +215,7 @@ void keyPressed() {
         sim[i] = false;
       }
     }
+    ol = new OrbList(NUM_ORBS, ordered);
   } // Drag
   if (key == '4') {
     for (int i = 0; i < sim.length; i++) {
@@ -231,13 +236,15 @@ void keyPressed() {
         sim[i] = false;
       }
     }
+    ordered = false;
+    ol = new OrbList(NUM_ORBS, ordered);
   } // Combination
 }//keyPressed
 
 void OrbitSim() {
   ordered = false;
   FixedOrb Sun = new FixedOrb(width/2, height/2, 200, 99);
-  Sun.c = color(255, 0, 0);
+  Sun.c = color(#C44E0A);
   Sun.display();
   ol.display();
   if (toggles[moving]) {
@@ -251,9 +258,9 @@ void SpringSim() {
   Jester.c = color(#92B216);
   Jester.display();
   ol.display();
-  ol.SpringSim(Jester, SPRING_LENGTH);
+  ol.SpringSim(Jester, SPRING_LENGTH*2);
   if (toggles[moving]) {
-    ol.SpringJester(Jester, SPRING_LENGTH, SPRING_K);
+    ol.SpringJester(Jester, SPRING_LENGTH*2, SPRING_K);
   }
 }//SpringSim
 
@@ -281,3 +288,44 @@ void ShockwaveSim() {
     }
   }
 }//ShockwaveSim
+
+void DragSim() {
+  ol.display();
+  if (toggles[moving]) {
+    ol.DragSim(D_COEF);
+  }
+  fill(0, 255, 0, 50);
+  rect(0, 500, width, height);
+}//DragSim
+
+void CombinationSim() {
+  int rad = int(random(350, 700));
+  ordered = false;
+  FixedOrb Sun = new FixedOrb(width/2, height/2, 200, 99);
+  Sun.c = color(#C44E0A);
+  Sun.display();
+  ol.display();
+  ol.SpringSim(Sun, SPRING_LENGTH*2);
+  if (toggles[moving]) {
+    ol.SpringJester(Sun, SPRING_LENGTH*2, SPRING_K*20);
+    ol.Orbit(Sun, G_CONSTANT);
+    if (counter == 100) {
+      storedrad = rad;
+      counter = 0;
+      fill(9, 64, 108, 50);
+      noStroke();
+      circle(width/2, height/2, rad);
+      radcounter = 0;
+      ol.applyPropulsion(width/2, height/2, rad, random(MIN_FORCE, MAX_FORCE)*500);
+    } else {
+      if (radcounter < 20) {
+        fill(9, 64, 108, 50);
+        noStroke();
+        circle(width/2, height/2, storedrad);
+        radcounter++;
+      }
+      counter++;
+      println(counter);
+    }
+  }
+}

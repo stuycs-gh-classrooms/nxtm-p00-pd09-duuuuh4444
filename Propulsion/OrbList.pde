@@ -27,17 +27,17 @@ class OrbList {
         i++;
       }
     } else {
-      if (sim[0]) {
-        float bsize = random(10, MAX_SIZE);
-        boolean w = round(random(1)) == 0 ? true : false;
-        boolean h = round(random(1)) == 0 ? true : false;
-        front = new OrbNode(w ? random(bsize/2, width/2-100-bsize/2) : random(width/2+100+bsize/2, width-bsize/2), h ? random(bsize/2, height/2-100-bsize/2) : random(height/2+100+bsize/2, height-bsize/2), bsize, random(10, 100));
+      if (sim[0] || sim[4]) {
+        front = new OrbNode();
+        while (front.center.dist(new PVector(width/2, height/2)) <= 100+front.bsize) {
+          front = new OrbNode();
+        }
         OrbNode current = front;
         while (i < n) {
-          float bsize2 = random(10, MAX_SIZE);
-          boolean w2 = round(random(1)) == 0 ? true : false;
-          boolean h2 = round(random(1)) == 0 ? true : false;
-          current.next = new OrbNode(w2 ? random(bsize2/2, width/2-100-bsize2/2) : random(width/2+100+bsize2/2, width-bsize2/2), h2 ? random(bsize2/2, height/2-100-bsize2/2) : random(height/2+100+bsize2/2, height-bsize2/2), bsize2, random(10, 100));
+          current.next = new OrbNode();
+          while (current.next.center.dist(new PVector(width/2, height/2)) <= 100+current.next.bsize) {
+            current.next = new OrbNode();
+          }
           current.next.previous = current;
           current = current.next;
           i++;
@@ -175,10 +175,10 @@ class OrbList {
   void Orbit(FixedOrb o, float gConstant) {
     OrbNode current = front;
     while (current != null) {
-        PVector gravity = current.getGravity(o, gConstant);
-        current.applyForce(gravity);
-        current.velocity = current.getOrbitVelocity(o, gConstant);
-        current = current.next;
+      PVector gravity = current.getGravity(o, gConstant);
+      current.applyForce(gravity);
+      current.velocity = current.getOrbitVelocity(o, gConstant);
+      current = current.next;
     }
   }//Orbit
 
@@ -206,4 +206,14 @@ class OrbList {
       current = current.next;
     }
   }//SpringJester
+
+  void DragSim(float dc) {
+    OrbNode current = front;
+    while (current != null) {
+      if (current.center.y > 500) {
+        applyDrag(dc);
+      }
+      current = current.next;
+    }
+  }//DragSim
 }//OrbList
