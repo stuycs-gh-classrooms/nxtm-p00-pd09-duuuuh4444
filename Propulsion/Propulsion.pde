@@ -153,7 +153,8 @@ void mouseClicked() {
             sim[j] = false;
           }
         }
-
+        if(!sim[2]) ordered = false; 
+        ol = new OrbList(NUM_ORBS, ordered);
         //println(sim[i]);
         break;
       }
